@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drone Journalism — Fall 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17171b;
+    --paper:#f4f3ef;
+    --slate:#6f6f78;
+    --rule:#d9d6cd;
+    --signal:#0f7a72;
+    --signal-soft:rgba(15,122,114,.10);
+    --display:"Space Grotesk",system-ui,-apple-system,sans-serif;
+    --body:"Newsreader",Georgia,"Times New Roman",serif;
+    --mono:"Space Mono",ui-monospace,Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:1.075rem;
+    line-height:1.62;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:880px;
+    margin:0 auto;
+    padding:clamp(1.25rem,4vw,3rem) clamp(1.1rem,5vw,2.5rem) 5rem;
+  }
+
+  a{color:var(--signal);text-decoration:none;border-bottom:1px solid var(--signal-soft);transition:border-color .15s ease;}
+  a:hover{border-bottom-color:var(--signal);}
+  a:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px;}
+
+  .mono{font-family:var(--mono);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:clamp(1.75rem,5vw,3rem) clamp(1.1rem,4vw,2.25rem);
+    margin-bottom:3.5rem;
+  }
+  .hero .corner{position:absolute;width:18px;height:18px;border:2px solid var(--ink);}
+  .hero .corner.tl{top:0;left:0;border-right:0;border-bottom:0;}
+  .hero .corner.tr{top:0;right:0;border-left:0;border-bottom:0;}
+  .hero .corner.bl{bottom:0;left:0;border-right:0;border-top:0;}
+  .hero .corner.br{bottom:0;right:0;border-left:0;border-top:0;}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.7rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--slate);
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    flex-wrap:wrap;
+  }
+  .rec{display:inline-flex;align-items:center;gap:.4rem;color:var(--signal);}
+  .rec .dot{width:8px;height:8px;border-radius:50%;background:var(--signal);display:inline-block;animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+  h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(2.3rem,8.5vw,4.4rem);
+    line-height:1.02;
+    letter-spacing:-.02em;
+    margin:1.1rem 0 .9rem;
+  }
+  .tagline{
+    font-size:clamp(1.05rem,2.6vw,1.3rem);
+    max-width:34ch;
+    font-style:italic;
+    margin:0 0 1.5rem;
+    color:#3a3a40;
+  }
+  .specs{
+    font-family:var(--mono);
+    font-size:.78rem;
+    letter-spacing:.04em;
+    color:var(--ink);
+    display:flex;
+    flex-wrap:wrap;
+    gap:.35rem .9rem;
+    border-top:1px solid var(--rule);
+    padding-top:1rem;
+  }
+  .specs span{white-space:nowrap;}
+  .specs b{font-weight:400;color:var(--slate);}
+
+  /* ---------- CONTACT CARD ---------- */
+  .contact{
+    border:1.5px solid var(--ink);
+    margin-bottom:3.5rem;
+  }
+  .contact .label{
+    font-family:var(--mono);
+    font-size:.66rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--paper);
+    background:var(--ink);
+    padding:.55rem 1rem;
+  }
+  .contact .grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:0;
+  }
+  .contact .cell{
+    padding:1rem 1.1rem;
+    border-top:1px solid var(--rule);
+    border-right:1px solid var(--rule);
+  }
+  .contact .cell:nth-child(2n){border-right:0;}
+  .contact .k{
+    font-family:var(--mono);
+    font-size:.64rem;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    color:var(--slate);
+    display:block;
+    margin-bottom:.25rem;
+  }
+  .contact .v{font-size:.98rem;line-height:1.4;}
+  .contact .v.full{font-size:1.05rem;}
+  .contact .span2{grid-column:1 / -1;border-right:0;}
+
+  /* ---------- SECTIONS ---------- */
+  section{margin-bottom:3.25rem;}
+  h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(1.3rem,3.4vw,1.7rem);
+    letter-spacing:-.01em;
+    margin:0 0 1rem;
+    display:flex;
+    align-items:baseline;
+    gap:.7rem;
+  }
+  h2 .num{
+    font-family:var(--mono);
+    font-size:.72rem;
+    font-weight:700;
+    color:var(--signal);
+    letter-spacing:.05em;
+    transform:translateY(-.15em);
+  }
+  section p{margin:0 0 1rem;}
+  section p:last-child{margin-bottom:0;}
+
+  ul.clean{list-style:none;margin:0 0 1rem;padding:0;}
+  ul.clean li{
+    position:relative;
+    padding-left:1.5rem;
+    margin-bottom:.5rem;
+  }
+  ul.clean li::before{
+    content:"";
+    position:absolute;
+    left:0;top:.62em;
+    width:8px;height:1.5px;
+    background:var(--signal);
+  }
+
+  .callout{
+    border-left:3px solid var(--signal);
+    background:var(--signal-soft);
+    padding:.85rem 1.1rem;
+    margin:1.25rem 0;
+    font-size:.98rem;
+  }
+  .callout strong{font-family:var(--display);font-weight:600;}
+
+  /* ---------- GRADING ---------- */
+  .grades{margin:1rem 0 0;}
+  .grade-row{
+    display:grid;
+    grid-template-columns:4.5rem 1fr;
+    gap:1rem;
+    padding:.85rem 0;
+    border-top:1px solid var(--rule);
+    align-items:start;
+  }
+  .grade-row:last-child{border-bottom:1px solid var(--rule);}
+  .grade-row .letter{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:1.35rem;
+    line-height:1.2;
+    color:var(--signal);
+  }
+
+  /* ---------- SCHEDULE TIMELINE ---------- */
+  .schedule{margin-top:1.5rem;}
+  .phase{
+    font-family:var(--mono);
+    font-size:.7rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:.5rem 0;
+    margin-top:1.5rem;
+    border-top:2px solid var(--ink);
+    display:flex;
+    justify-content:space-between;
+  }
+  .phase:first-child{margin-top:0;}
+  .phase .sub{color:var(--slate);}
+
+  .clip{
+    display:grid;
+    grid-template-columns:5.5rem 1fr;
+    gap:0 1.25rem;
+    padding:1.05rem 0;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  .clip .time{
+    font-family:var(--mono);
+    font-size:.78rem;
+    line-height:1.3;
+    color:var(--ink);
+    padding-top:.15rem;
+  }
+  .clip .time .day{display:block;font-size:.62rem;letter-spacing:.12em;color:var(--slate);text-transform:uppercase;margin-top:.15rem;}
+  .clip .num{
+    position:absolute;
+    left:0;top:-.55rem;
+    font-family:var(--mono);
+    font-size:.6rem;
+    font-weight:700;
+    color:var(--signal);
+    letter-spacing:.05em;
+  }
+  .clip .topic{font-size:1.02rem;line-height:1.4;margin:0 0 .5rem;}
+  .clip .topic .lead{font-family:var(--display);font-weight:600;}
+  .clip .hw{
+    font-size:.9rem;
+    color:#42424a;
+    display:flex;
+    gap:.55rem;
+    align-items:baseline;
+    margin-bottom:.35rem;
+  }
+  .clip .hw:last-child{margin-bottom:0;}
+  .clip .hw .hwlabel{
+    font-family:var(--mono);
+    font-size:.6rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--slate);
+    white-space:nowrap;
+    border:1px solid var(--rule);
+    padding:.1rem .35rem;
+    transform:translateY(-.05em);
+  }
+
+  .slug{
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    padding:.7rem 0;
+    border-bottom:1px dashed var(--rule);
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.06em;
+    color:var(--slate);
+    text-transform:uppercase;
+  }
+  .slug .bar{flex:0 0 5.5rem;border-top:1px dashed var(--slate);height:1px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    margin-top:4rem;
+    padding-top:1.5rem;
+    border-top:2px solid var(--ink);
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.05em;
+    color:var(--slate);
+    line-height:1.7;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:560px){
+    .contact .grid{grid-template-columns:1fr;}
+    .contact .cell{border-right:0;}
+    .clip{grid-template-columns:1fr;gap:.45rem;}
+    .clip .time{padding-top:0;display:flex;align-items:baseline;gap:.6rem;}
+    .clip .time .day{margin-top:0;}
+    .clip .num{position:static;display:block;margin-bottom:.1rem;}
+    .slug .bar{flex-basis:2rem;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <span class="corner bl"></span><span class="corner br"></span>
+    <div class="eyebrow">
+      <span class="rec"><span class="dot"></span>Fall 2026</span>
+      <span>·</span>
+      <span>Craig Newmark Graduate School of Journalism</span>
+    </div>
+    <h1>Drone Journalism</h1>
+    <p class="tagline">A camera that flies — and how to earn the license to use it.</p>
+    <div class="specs">
+      <span><b>Course</b> JOUR&nbsp;73254</span>
+      <span><b>Meets</b> Fridays 2:00&nbsp;PM&nbsp;–&nbsp;4:50&nbsp;PM</span>
+      <span><b>Room</b> TBA</span>
+      <span><b>Aug&nbsp;28&nbsp;–&nbsp;Oct&nbsp;16</b></span>
+      <span><b>Flight days</b> TBD</span>
+    </div>
+  </header>
+
+  <!-- CONTACT -->
+  <div class="contact">
+    <div class="label">Instructor — Travis Fox</div>
+    <div class="grid">
+      <div class="cell span2">
+        <span class="k">Email</span>
+        <span class="v full"><a href="mailto:travis.fox@journalism.cuny.edu">travis.fox@journalism.cuny.edu</a></span>
+      </div>
+      <div class="cell">
+        <span class="k">Cell — call or text anytime</span>
+        <span class="v">202-299-6010</span>
+      </div>
+      <div class="cell">
+        <span class="k">Office — drop in</span>
+        <span class="v">#422 (end of the faculty hallway)</span>
+      </div>
+      <div class="cell">
+        <span class="k">Schedule a meeting</span>
+        <span class="v"><a href="https://meet.travisfox.com">meet.travisfox.com</a></span>
+      </div>
+      <div class="cell">
+        <span class="k">Zoom</span>
+        <span class="v"><a href="https://zoom.travisfox.com">zoom.travisfox.com</a></span>
+      </div>
+      <div class="cell span2">
+        <span class="k">Anonymous feedback — always welcome</span>
+        <span class="v full"><a href="https://docs.google.com/forms/d/e/1FAIpQLScsxrw9jVM8E_vRkMwTMBaHXVF_zizjJ2mamPGB0wEXT4jnaQ/viewform?usp=header">Submit feedback</a></span>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>Course objective</h2>
+    <p>The advent of drone technology gives journalists and filmmakers a powerful new tool — a camera that flies! We will teach you how to fly a drone to achieve the best aerial shots and other uses within the field of journalism. But most importantly, this module will cover how this new tool comes with a slew of legal and ethical questions. You must be licensed by the federal government to operate as a drone journalist. The biggest part of this course will be preparation for the FAA's remote pilot exam. It will also introduce you to a variety of local laws and ethical guidelines that are crucial to how you fly as a drone journalist.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>Course outcomes</h2>
+    <ul class="clean">
+      <li><strong>Pass the FAA Part 107 remote pilot exam by the end of the semester.</strong></li>
+      <li>Understand the ethics, privacy and safety issues in drone journalism</li>
+      <li>Understand how local, state and international laws can affect drone flight</li>
+      <li>Understand when and how to use drone footage as a storytelling tool</li>
+      <li>Become familiar with the different ways drones are currently used in journalism and the types of stories where drones are an effective tool</li>
+      <li>Fly a DJI drone to get several different aerial shots</li>
+    </ul>
+    <p>Each week of class will be structured around one or more topics and there will be work expected <em>before</em> each class.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>Required book</h2>
+    <p>You are required to buy a textbook for this course. <a href="https://asa2fly.com/test-prep/remote-pilot/test-prep-books/">ASA's Remote Pilot Test Prep 2026-2027</a> will form the backbone of the module and we will use the included maps extensively in the course. There is no way to complete the course without the book. Please let me know asap if you are unable to purchase the book for any reason.</p>
+    <div class="callout">
+      <p style="margin:0;">You will need a <strong>new, physical copy</strong> of the current edition. <strong>No used or digital options can be used.</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>Schedule &amp; flight training</h2>
+    <p>Two of our class sessions will be dedicated to flying in person on the weekend, and you'll take your FAA exam off site in lieu of your final class. Because of these additional time requirements, we meet on campus for seven weeks — the first seven Fridays of the semester.</p>
+    <p>There will be several available slots for in-person flying at <a href="https://maps.app.goo.gl/HgKnTvzJL8MyJ4Q3A">Calvert Vaux Park, Brooklyn</a>, 9:30am–4pm. <em>You are expected to come to just one of them.</em> <strong>Flight dates are TBD</strong> — I'll announce them early in the semester along with a sign-up sheet, and we can add additional dates if needed.</p>
+    <p>The dates we meet in the field could easily change based on weather and FAA TFRs (temporary flight restrictions), so I will verify in writing each session. <em>Please note, the meeting point at Calvert Vaux isn't close to public transport, so please allow enough time to walk there. If this is a problem for you for whatever reason let me know and we'll work it out. Please plan ahead!</em></p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>The FAA test</h2>
+    <p>It is the most important outcome of the course that you pass the official FAA test at the end of the module. Newmark is graciously covering the exam fee ($173). I'll provide you with your unique voucher number at the final class. You then will need to schedule the exam at an FAA testing center. Your score on that test counts as the final test score for the course. You'll be able to book the location and time of the exam <a href="https://faa.psiexams.com/FAA/login">here</a>. Please review the test <a href="https://www.faa.gov/training_testing/testing/media/testing_matrix.pdf">requirements</a>.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>Can I zoom in to class?</h2>
+    <p>No. I'm not using zoom anymore.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>Week by week</h2>
+    <div class="schedule">
+
+      <div class="phase"><span>On campus</span><span class="sub">Fridays · 2:00–4:50 PM</span></div>
+
+      <div class="clip">
+        <span class="num">CLASS 01</span>
+        <div class="time">08.28<span class="day">Fri</span></div>
+        <div>
+          <p class="topic"><span class="lead">FAA Part 107 regulations.</span> Chapter 1.</p>
+          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is illegal based on chapter 1 regs and submit it to our ongoing <a href="https://docs.google.com/spreadsheets/d/1JoLl21Iu_5lBMnj9hIW4IhpOrAkwPhWMTLphf58xL6k/edit?usp=sharing">database</a> of questionable drone shots — due Sep 2 at 11:59pm</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 1 by watching <a href="https://youtu.be/6_ucCKFJUCU?t=277">The Numbers</a> (from 4:38 to 14:40)</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 2 until but not including Topography (page 2-15)</span></div>
+        </div>
+      </div>
+
+      <div class="clip">
+        <span class="num">CLASS 02</span>
+        <div class="time">09.04<span class="day">Fri</span></div>
+        <div>
+          <p class="topic"><span class="lead">The National Airspace System.</span> Identify where you can and can't fly (Chapter 2, part 1). Quiz.</p>
+          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is illegal based on chapter 2 regs and submit it to the <a href="https://docs.google.com/spreadsheets/d/1JoLl21Iu_5lBMnj9hIW4IhpOrAkwPhWMTLphf58xL6k/edit?usp=sharing">database</a> — due Sep 9 at 11:59pm</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 2 by watching <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=869s">Airspace</a> (14:40 to 20:10) and <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=1930s">Sectional Charts</a> (32:12 to 47:56)</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Read the rest of Chapter 2</span></div>
+        </div>
+      </div>
+
+      <div class="slug"><span class="bar"></span><span>Sep 11 — No class · Rosh Hashanah (CUNY: no classes Sep 11–13)</span></div>
+
+      <div class="clip">
+        <span class="num">CLASS 03</span>
+        <div class="time">09.18<span class="day">Fri</span></div>
+        <div>
+          <p class="topic"><span class="lead">Longitude, latitude &amp; airport operations.</span> Chapter 2, part 2. Quiz.</p>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 2 by watching <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=3017s">Latitude and Longitude</a> (from 50:21 to 55:55)</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 3</span></div>
+        </div>
+      </div>
+
+      <div class="clip">
+        <span class="num">CLASS 04</span>
+        <div class="time">09.25<span class="day">Fri</span></div>
+        <div>
+          <p class="topic"><span class="lead">Weather.</span> How weather affects drone flight, the restrictions on flying in certain conditions and how to read old-fashioned FAA weather reports. Chapter 3. Quiz.</p>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 3 by watching the <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=4073s">Weather</a> video</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is unethical or illegal based on weather and submit it to the <a href="https://docs.google.com/spreadsheets/d/1JoLl21Iu_5lBMnj9hIW4IhpOrAkwPhWMTLphf58xL6k/edit?usp=sharing">database</a> — due Sep 30 at 11:59pm</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 4</span></div>
+        </div>
+      </div>
+
+      <div class="clip">
+        <span class="num">CLASS 05</span>
+        <div class="time">10.02<span class="day">Fri</span></div>
+        <div>
+          <p class="topic"><span class="lead">Aircraft performance.</span> How aircraft perform in different situations based on the specific qualities of air and angles of wings, etc. If you've heard of airplanes stalling, you'll finally understand why it happens. Chapter 4. Quiz.</p>
+          <div class="hw"><span class="hwlabel">HW</span><span>Prepare for flight day by watching this basic how-to <a href="https://www.youtube.com/watch?v=O0ydRf3e5iM">video</a></span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 5</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>After chapter 5, take two practice tests and email me results by Oct 7 at 11:59pm</span></div>
+        </div>
+      </div>
+
+      <div class="clip">
+        <span class="num">CLASS 06</span>
+        <div class="time">10.09<span class="day">Fri</span></div>
+        <div>
+          <p class="topic"><span class="lead">Pilot operations.</span> What is expected of you as a pilot other than flying your aircraft, including inspections, crew management and what the FAA describes as hazardous attitudes. Chapter 5. Quiz.</p>
+          <div class="hw"><span class="hwlabel">HW</span><span>Take two practice tests and email me results by Oct 14 at 11:59pm</span></div>
+        </div>
+      </div>
+
+      <div class="clip">
+        <span class="num">CLASS 07</span>
+        <div class="time">10.16<span class="day">Fri</span></div>
+        <div>
+          <p class="topic"><span class="lead">Local laws &amp; ethics.</span> All the rules that are not included in federal drone regulations, such as state and local laws, including NYC's rules — plus the ethics around flying in journalistic situations. Quiz. You'll receive your FAA exam voucher today.</p>
+          <div class="hw"><span class="hwlabel">Discuss</span><span>FAA vs localities: regulating take off and landing or overflight</span></div>
+          <div class="hw"><span class="hwlabel">Discuss</span><span>Property rights vs 1st amendment rights (and what's this have to do with chickens!)</span></div>
+          <div class="hw"><span class="hwlabel">Discuss</span><span>Reasonable expectation of privacy vs rights of journalists in the sky</span></div>
+          <div class="hw"><span class="hwlabel">Discuss</span><span>How journalistic ethics differ in the sky. Do they?</span></div>
+        </div>
+      </div>
+
+      <div class="phase"><span>In the field</span><span class="sub">Weekend · 9:30 AM–4 PM</span></div>
+
+      <div class="clip">
+        <span class="num">FLIGHT DAY</span>
+        <div class="time">TBD<span class="day">Weekend</span></div>
+        <div>
+          <p class="topic"><span class="lead">Flight training.</span> <a href="https://maps.app.goo.gl/HgKnTvzJL8MyJ4Q3A">Calvert Vaux Park, Brooklyn</a>. Dates TBD — sign-up sheet to come. Attend one session.</p>
+        </div>
+      </div>
+
+      <div class="clip">
+        <span class="num">FINAL</span>
+        <div class="time">TBD<span class="day">Off site</span></div>
+        <div>
+          <p class="topic"><span class="lead">FAA Part 107 exam.</span> Taken at an FAA testing center in lieu of a final class — schedule yours at <a href="https://faa.psiexams.com/FAA/login">faa.psiexams.com</a>.</p>
+        </div>
+      </div>
+
+    </div>
+    <p style="margin-top:1.5rem;font-size:.9rem;color:var(--slate);">This syllabus may be updated. I'll let you know if anything is added or changed.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">08</span>Grading</h2>
+    <p>Your grade will be determined based on your scores on the final test, weekly quizzes and practice tests.</p>
+    <div class="grades">
+      <div class="grade-row">
+        <span class="letter">50%</span>
+        <span><strong>Final test</strong> (500 points). This test will be curved, with the top scorer receiving 500 points and the remaining students increased by the same difference.</span>
+      </div>
+      <div class="grade-row">
+        <span class="letter">24%</span>
+        <span><strong>Quizzes</strong> (240 points: 40 points per quiz). We will have a quiz at the beginning of each class, based on the previous class and readings. No make-ups for unexcused absences. Quizzes are graded.</span>
+      </div>
+      <div class="grade-row">
+        <span class="letter">16%</span>
+        <span><strong>Homework</strong> (160 points: 20 points per database entry and 25 points per practice test). These are all pass/fail.</span>
+      </div>
+      <div class="grade-row">
+        <span class="letter">10%</span>
+        <span><strong>Flight test</strong> (100 points). Hint: don't crash.</span>
+      </div>
+    </div>
+    <p style="margin-top:1rem;"><em>Extra credit:</em> extra practice tests beyond the 4 assigned tests, completed before the Part 107 test.</p>
+    <p>Late work receives a 50% reduction in grade.</p>
+    <div class="callout">
+      <p style="margin:0;"><strong>No course incompletes will be given.</strong> You must complete the FAA Part 107 test by the time I need to submit grades in December. Failure to do so will result in a failure in the course.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">09</span>Readings &amp; online resources</h2>
+    <ul class="clean">
+      <li><a href="https://apps.apple.com/us/app/prepware-remote-pilot/id1135991142">Prepware App for studying for the Part 107 test ($5)</a> — a great way to study for the test</li>
+      <li><a href="https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/phak/">FAA's Pilot Handbook of Aeronautical Knowledge</a> — the bible for all flight in the US including drones, airplanes, etc. It's a real page-turner! Chapters 2, 4, 12 and 15 are most relevant to drones and passing the Part 107 test</li>
+      <li><a href="https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/media/remote_pilot_study_guide.pdf">FAA Part 107 Test Study Guide</a> — dry and long, but it covers what will be on the test</li>
+      <li><a href="http://cessnachick.com/525-2/">How to Read a Sectional Chart</a> — from a pilot's blog, but easy and helpful for learning the symbols</li>
+      <li><a href="https://nppa.org/sites/default/files/Done%20Code%20of%20Ethics.pdf">NPPA Drone Journalism Code of Ethics</a> and <a href="http://www.dronejournalism.org/code-of-ethics/">PSDJ Code of Ethics</a></li>
+      <li><a href="https://blog.pond5.com/4240-5-essential-drone-cinematography-techniques/">Very Basic Drone Shot Types</a> — we will expand on this</li>
+      <li><a href="https://www.youtube.com/watch?v=6_ucCKFJUCU">FREE Drone Certification Study Guide: FAA Part 107 sUAS Test, by Tony Northrup</a> — good and long</li>
+      <li><a href="https://lens.blogs.nytimes.com/2017/03/16/democratizing-the-sky-drones-in-visual-journalism/">Q&amp;A with Josh Haner</a></li>
+      <li><a href="https://www.nytimes.com/2016/12/14/world/5-times-drones-told-the-story.html">Five Times Drones Told the Story — NYT</a></li>
+      <li><a href="https://www.wired.co.uk/article/bbc-drone-journalism">Behind the Mind-Boggling Shots Captured by BBC Drones</a></li>
+      <li><a href="https://www.icij.org/blog/2018/06/news-drones-reveal-big-companies-draining-local-water-supplies-peru-colombia/">News Drones Reveal Big Companies are Draining Local Water Supplies in Peru, Colombia (investigative)</a></li>
+      <li><a href="https://www.businessinsider.com/heres-how-drones-are-transforming-news-media-2017-1">How Drones Are Transforming Media</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">10</span>Some examples of drone journalism</h2>
+    <ul class="clean">
+      <li><a href="https://youtu.be/uXWw0y44xaM">The Drone Operators of #NODAPL</a> (AJ+)</li>
+      <li><a href="https://www.youtube.com/watch?v=9kLjUfR4IeQ">Giving Coral Reefs New Life</a> (video Kayle shot for NationSwell)</li>
+      <li>NYT environmental interactives (Josh Haner): <a href="https://www.nytimes.com/interactive/2015/10/27/world/greenland-is-melting-away.html">Greenland is Melting Away</a> · <a href="https://www.nytimes.com/interactive/2016/07/07/world/americas/bolivia-climate-change-lake-poopo.html">Climate Change Claims a Lake and an Identity</a> · <a href="https://www.nytimes.com/interactive/2018/03/14/climate/easter-island-erosion.html">Easter Island Critically Vulnerable to Rising Ocean Levels</a></li>
+      <li><a href="https://www.youtube.com/watch?v=d7uLpGowkYE">Flooding After Hurricane Maria</a> — Guardian News (natural disaster coverage)</li>
+      <li><a href="https://www.nbcnews.com/video/drone-video-captures-scale-of-wildfire-devastation-1069662787527">Drone Video Captures Scale of Wildfire Devastation</a> — NBC</li>
+      <li><a href="https://www.youtube.com/watch?v=BMrsy9C_re8">Aerial Tour of the Amboseli Ecosystem</a> (wildlife — capturing footage where traditional cameras cannot go)</li>
+      <li><a href="https://www.jsonline.com/videos/news/2018/03/24/drone-video-march-our-lives-event-milwaukee/33244295/">Various Drone Shots of March for Our Lives in Milwaukee</a></li>
+      <li><a href="https://www.cnn.com/videos/us/2015/03/05/selma-timeline-drone-50-years-orig-nws.cnn/video/playlists/selma/">50 Years Later, Selma</a> (CNN, historical video)</li>
+      <li><a href="https://www.youtube.com/watch?v=449ZOWbUkf0">Auschwitz: Drone Video of Nazi Concentration Camp</a> — BBC News</li>
+      <li><a href="https://www.cbsnews.com/news/chernobyl-the-catastrophe-that-never-ended/">Chernobyl: The Catastrophe That Never Ended</a> — CBS</li>
+      <li><a href="https://www.nytimes.com/2016/10/15/world/middleeast/aleppo-destruction-drone-video.html">Drone Documents Aleppo Devastation</a> — NYT</li>
+      <li><a href="https://www.youtube.com/watch?v=UND-yuI4_Qg">A Start Up with Eyes on the Tiny Prize</a> (drone footage of neighborhood blight, used stylistically throughout)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">11</span>Independent use of drones</h2>
+    <p>Unlike other equipment, we cannot check out drones to students. All of our flying will be done with Travis at Calvert Vaux Park. The only time we would be agreeable to lend a drone is if a student is both insured and Part 107 licensed.</p>
+  </section>
+
+  <footer>
+    JOUR 73254 · Drone Journalism · Fall 2026<br>
+    Craig Newmark Graduate School of Journalism at CUNY · Travis Fox
+  </footer>
+
+</div>
+</body>
+</html>
