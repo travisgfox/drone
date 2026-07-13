@@ -132,6 +132,20 @@
     background:var(--signal-soft);
     text-align:center;
   }
+  .sched{
+    overflow:hidden;
+    height:600px;
+    background:#fff;
+    border-top:1px solid var(--rule);
+  }
+  .sched iframe{
+    width:100%;
+    height:760px;
+    border:0;
+    display:block;
+    margin-top:-160px;
+    background:#fff;
+  }
   .contact .k{
     font-family:var(--mono);
     font-size:.64rem;
@@ -361,14 +375,12 @@
         <span class="v"><a href="https://docs.google.com/forms/d/e/1FAIpQLScsxrw9jVM8E_vRkMwTMBaHXVF_zizjJ2mamPGB0wEXT4jnaQ/viewform?usp=header">Submit feedback</a></span>
       </div>
     </div>
-  </div>
-
-  <!-- BOOKING -->
-  <div class="contact booking">
     <div class="label">Book office hours — pick a time</div>
-    <!-- Google Calendar Appointment Scheduling begin -->
-    <iframe src="https://calendar.google.com/calendar/appointments/AcZssZ3wK6LdycOO9_oY8GvaeWVsRtQPQKt_TCS7Itk=?gv=true" style="border:0;display:block;background:#ffffff;" width="100%" height="600" frameborder="0" title="Book a meeting with Travis Fox"></iframe>
-    <!-- end Google Calendar Appointment Scheduling -->
+    <div class="sched">
+      <!-- Google Calendar Appointment Scheduling begin -->
+      <iframe src="https://calendar.google.com/calendar/appointments/AcZssZ3wK6LdycOO9_oY8GvaeWVsRtQPQKt_TCS7Itk=?gv=true" frameborder="0" title="Book a meeting with Travis Fox"></iframe>
+      <!-- end Google Calendar Appointment Scheduling -->
+    </div>
   </div>
 
   <section>
