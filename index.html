@@ -105,6 +105,7 @@
   .contact{
     border:1.5px solid var(--ink);
     margin-bottom:3.5rem;
+    background:#fff;
   }
   .contact .label{
     font-family:var(--mono);
@@ -134,17 +135,21 @@
   }
   .sched{
     overflow:hidden;
-    height:600px;
+    height:320px;
     background:#fff;
     border-top:1px solid var(--rule);
   }
   .sched iframe{
     width:100%;
-    height:760px;
+    height:480px;
     border:0;
     display:block;
     margin-top:-160px;
     background:#fff;
+  }
+  @media (max-width:560px){
+    .sched{height:420px;}
+    .sched iframe{height:580px;}
   }
   .contact .k{
     font-family:var(--mono);
