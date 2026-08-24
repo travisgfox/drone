@@ -162,6 +162,83 @@
   .contact .v.full{font-size:1.05rem;}
   .contact .span2{grid-column:1 / -1;border-right:0;}
 
+  /* ---------- COURSE HELPER ---------- */
+  .contact.bot{margin-bottom:0;}
+  .botlog{
+    padding:1.1rem;
+    display:flex;
+    flex-direction:column;
+    gap:.7rem;
+    min-height:150px;
+    max-height:340px;
+    overflow-y:auto;
+    border-top:1px solid var(--rule);
+  }
+  .msg{
+    font-size:.95rem;
+    line-height:1.5;
+    padding:.6rem .85rem;
+    max-width:85%;
+    border:1px solid var(--rule);
+  }
+  .msg.bot{align-self:flex-start;background:var(--signal-soft);border-color:transparent;}
+  .msg.me{align-self:flex-end;background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .msg.think{align-self:flex-start;color:var(--slate);font-style:italic;background:transparent;border-color:transparent;padding-left:0;}
+  .chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.4rem;
+    padding:0 1.1rem .9rem;
+  }
+  .chip{
+    font-family:var(--mono);
+    font-size:.68rem;
+    letter-spacing:.03em;
+    color:var(--signal);
+    background:transparent;
+    border:1px solid var(--signal);
+    padding:.3rem .55rem;
+    cursor:pointer;
+  }
+  .chip:hover{background:var(--signal-soft);}
+  .botbar{
+    display:flex;
+    gap:0;
+    border-top:1px solid var(--rule);
+  }
+  .botbar input{
+    flex:1;
+    font-family:var(--body);
+    font-size:1rem;
+    padding:.85rem 1.1rem;
+    border:0;
+    background:#fff;
+    color:var(--ink);
+  }
+  .botbar input:focus{outline:2px solid var(--signal);outline-offset:-2px;}
+  .botbar button{
+    font-family:var(--mono);
+    font-size:.7rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--paper);
+    background:var(--ink);
+    border:0;
+    padding:.85rem 1.4rem;
+    cursor:pointer;
+  }
+  .botbar button:hover{background:var(--signal);}
+  .botfoot{
+    font-family:var(--mono);
+    font-size:.62rem;
+    line-height:1.5;
+    letter-spacing:.04em;
+    color:var(--slate);
+    padding:.6rem 1.1rem;
+    border-top:1px solid var(--rule);
+    background:var(--paper);
+  }
+
   /* ---------- SECTIONS ---------- */
   section{margin-bottom:3.25rem;}
   h2{
@@ -611,11 +688,144 @@
     <p>Unlike other equipment, we cannot check out drones to students. All of our flying will be done with Travis at Calvert Vaux Park. The only time we would be agreeable to lend a drone is if a student is both insured and Part 107 licensed.</p>
   </section>
 
+  <!-- ===== PART 107 STUDY HELPER (live — proxied through Cloudflare Worker) ===== -->
+  <section>
+    <h2><span class="num">12</span>Part 107 study helper</h2>
+    <p>Studying for the FAA exam? Ask here. This helper works from the text of Part 107 and the
+       FAA's Airman Certification Standards, so it can quote the actual regulation and cite the
+       section. It only covers exam material — for anything about this course, check the syllabus
+       above or ask me. It can be wrong: verify anything that matters against the test prep book.</p>
+
+    <div class="contact bot">
+      <div class="label">Part 107 study helper · JOUR 73254</div>
+
+      <div class="botlog" id="botlog" aria-live="polite">
+        <div class="msg bot">
+          Ask me anything on the Part 107 exam — regulations, airspace, weather, loading and
+          performance, or operations. I can also quiz you.
+        </div>
+      </div>
+
+      <div class="chips" id="chips">
+        <button type="button" class="chip">How high can I legally fly?</button>
+        <button type="button" class="chip">What are the cloud clearance minimums?</button>
+        <button type="button" class="chip">Can I fly in Class B airspace?</button>
+        <button type="button" class="chip">Which rules can be waived?</button>
+        <button type="button" class="chip">Quiz me on operations over people</button>
+      </div>
+
+      <form class="botbar" id="botform" autocomplete="off">
+        <input id="botinput" type="text" placeholder="Ask a question…" aria-label="Ask the course helper">
+        <button type="submit">Ask</button>
+      </form>
+
+      <div class="botfoot">
+        AI-generated answers — verify anything that matters against the test prep book. Questions are
+        sent to Google's Gemini API and are not private; don't paste anything sensitive. Limit of 20
+        questions per hour.
+      </div>
+    </div>
+  </section>
+
   <footer>
     JOUR 73254 · Drone Journalism · Fall 2026<br>
     Craig Newmark Graduate School of Journalism at CUNY · Travis Fox
   </footer>
 
 </div>
+<script>
+/* =========================================================================
+   PART 107 STUDY HELPER
+   Talks to a Cloudflare Worker that holds the API key and the course context.
+   No key, no secrets, nothing sensitive in this file.
+   Worker source: worker/worker.js · context: bot/ in this repo
+   ========================================================================= */
+
+(function () {
+  var ENDPOINT = 'https://drone-helper.travisgfox.workers.dev/';
+  var HISTORY_TURNS = 6;
+
+  var log    = document.getElementById('botlog');
+  var form   = document.getElementById('botform');
+  var input  = document.getElementById('botinput');
+  var chips  = document.getElementById('chips');
+  var button = form.querySelector('button');
+
+  var history = [];
+  var busy = false;
+
+  // --- minimal, safe markdown: escape everything, then re-add basic formatting
+  function render(text) {
+    var s = text
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/(^|[\s(])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+    s = s.replace(/\`([^\`]+)\`/g, '<code>$1</code>');
+    s = s.replace(/^\s*[-*]\s+(.*)$/gm, '• $1');
+    s = s.replace(/\n{2,}/g, '<br><br>').replace(/\n/g, '<br>');
+    return s;
+  }
+
+  function add(text, cls) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + cls;
+    if (cls === 'bot') d.innerHTML = render(text);
+    else d.textContent = text;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    return d;
+  }
+
+  function setBusy(state) {
+    busy = state;
+    input.disabled = state;
+    button.disabled = state;
+    button.textContent = state ? '…' : 'Ask';
+  }
+
+  async function ask(q) {
+    q = (q || '').trim();
+    if (!q || busy) return;
+
+    add(q, 'me');
+    input.value = '';
+    setBusy(true);
+    var thinking = add('thinking…', 'think');
+
+    try {
+      var res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q, history: history.slice(-HISTORY_TURNS) })
+      });
+      var data = await res.json();
+      var answer = data.answer || "I couldn't come up with an answer for that one — try rephrasing?";
+
+      thinking.remove();
+      add(answer, 'bot');
+
+      history.push({ role: 'user', text: q });
+      history.push({ role: 'bot',  text: answer });
+      if (history.length > HISTORY_TURNS) history = history.slice(-HISTORY_TURNS);
+
+    } catch (err) {
+      thinking.remove();
+      add("I couldn't reach the helper just now — check your connection and try again. If it keeps failing, let Travis know.", 'bot');
+    } finally {
+      setBusy(false);
+      input.focus();
+    }
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    ask(input.value);
+  });
+
+  chips.addEventListener('click', function (e) {
+    if (e.target.classList.contains('chip')) ask(e.target.textContent);
+  });
+})();
+</script>
 </body>
 </html>
