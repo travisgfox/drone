@@ -239,6 +239,62 @@
     background:var(--paper);
   }
 
+  /* ---------- INLINE VIDEO + SUBMIT ---------- */
+  a.vid::after{content:" ▸";font-size:.8em;}
+  a.sub{font-family:var(--mono);font-size:.7rem;letter-spacing:.03em;}
+  .player{
+    margin:.6rem 0 .2rem;
+    border:1px solid var(--rule);
+    background:#000;
+    aspect-ratio:16/9;
+    width:100%;
+    max-width:520px;
+  }
+  .player iframe{width:100%;height:100%;border:0;display:block;}
+  .subform{
+    margin:.7rem 0 .3rem;
+    border:1px solid var(--rule);
+    background:#fff;
+    padding:.9rem;
+    max-width:520px;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+  }
+  .subform label{
+    font-family:var(--mono);
+    font-size:.6rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--slate);
+  }
+  .subform input, .subform textarea{
+    font-family:var(--body);
+    font-size:.95rem;
+    padding:.45rem .55rem;
+    border:1px solid var(--rule);
+    background:#fff;
+    color:var(--ink);
+    width:100%;
+  }
+  .subform textarea{min-height:64px;resize:vertical;}
+  .subform input:focus, .subform textarea:focus{outline:2px solid var(--signal);outline-offset:-2px;}
+  .subform .row{display:flex;gap:.5rem;align-items:center;justify-content:space-between;}
+  .subform button{
+    font-family:var(--mono);
+    font-size:.68rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--paper);
+    background:var(--ink);
+    border:0;
+    padding:.5rem 1rem;
+    cursor:pointer;
+  }
+  .subform button:hover{background:var(--signal);}
+  .subform .note{font-family:var(--mono);font-size:.6rem;color:var(--slate);letter-spacing:.04em;}
+  .subform .ok{color:var(--signal);font-weight:700;}
+
   /* ---------- SECTIONS ---------- */
   section{margin-bottom:3.25rem;}
   h2{
@@ -517,8 +573,8 @@
         <div class="time">08.28<span class="day">Fri</span></div>
         <div>
           <p class="topic"><span class="lead">FAA Part 107 regulations.</span> Chapter 1.</p>
-          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is illegal based on chapter 1 regs and submit it to our ongoing <a href="https://docs.google.com/spreadsheets/d/1gynZCHWi08QqhxAgakyNDBheQFSa-V6ivB87VIjfJ1o/edit?usp=sharing">database</a> of questionable drone shots — due Sep 2 at 11:59pm</span></div>
-          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 1 by watching <a href="https://youtu.be/6_ucCKFJUCU?t=277">The Numbers</a> (from 4:38 to 14:40)</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is illegal based on chapter 1 regs and submit it — due Sep 2 at 11:59pm. <a class="sub" href="#" data-week="Week 1 — Chapter 1 regulations">Add your entry ↓</a></span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 1 by watching <a class="vid" href="#" data-v="6_ucCKFJUCU" data-s="278" data-e="880">The Numbers</a> (from 4:38 to 14:40)</span></div>
           <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 2 until but not including Topography (page 2-15)</span></div>
         </div>
       </div>
@@ -528,8 +584,8 @@
         <div class="time">09.04<span class="day">Fri</span></div>
         <div>
           <p class="topic"><span class="lead">The National Airspace System.</span> Identify where you can and can't fly (Chapter 2, part 1). Quiz.</p>
-          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is illegal based on chapter 2 regs and submit it to the <a href="https://docs.google.com/spreadsheets/d/1gynZCHWi08QqhxAgakyNDBheQFSa-V6ivB87VIjfJ1o/edit?usp=sharing">database</a> — due Sep 9 at 11:59pm</span></div>
-          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 2 by watching <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=869s">Airspace</a> (14:40 to 20:10) and <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=1930s">Sectional Charts</a> (32:12 to 47:56)</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is illegal based on chapter 2 regs and submit it — due Sep 9 at 11:59pm. <a class="sub" href="#" data-week="Week 2 — Chapter 2 airspace">Add your entry ↓</a></span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 2 by watching <a class="vid" href="#" data-v="6_ucCKFJUCU" data-s="880" data-e="1210">Airspace</a> (14:40 to 20:10) and <a class="vid" href="#" data-v="6_ucCKFJUCU" data-s="1932" data-e="2876">Sectional Charts</a> (32:12 to 47:56)</span></div>
           <div class="hw"><span class="hwlabel">HW</span><span>Read the rest of Chapter 2</span></div>
         </div>
       </div>
@@ -541,7 +597,7 @@
         <div class="time">09.18<span class="day">Fri</span></div>
         <div>
           <p class="topic"><span class="lead">Longitude, latitude &amp; airport operations.</span> Chapter 2, part 2. Quiz.</p>
-          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 2 by watching <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=3017s">Latitude and Longitude</a> (from 50:21 to 55:55)</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 2 by watching <a class="vid" href="#" data-v="6_ucCKFJUCU" data-s="3021" data-e="3355">Latitude and Longitude</a> (from 50:21 to 55:55)</span></div>
           <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 3</span></div>
         </div>
       </div>
@@ -551,8 +607,8 @@
         <div class="time">09.25<span class="day">Fri</span></div>
         <div>
           <p class="topic"><span class="lead">Weather.</span> How weather affects drone flight, the restrictions on flying in certain conditions and how to read old-fashioned FAA weather reports. Chapter 3. Quiz.</p>
-          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 3 by watching the <a href="https://www.youtube.com/watch?v=6_ucCKFJUCU&amp;t=4073s">Weather</a> video</span></div>
-          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is unethical or illegal based on weather and submit it to the <a href="https://docs.google.com/spreadsheets/d/1gynZCHWi08QqhxAgakyNDBheQFSa-V6ivB87VIjfJ1o/edit?usp=sharing">database</a> — due Sep 30 at 11:59pm</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Review Chapter 3 by watching the <a class="vid" href="#" data-v="6_ucCKFJUCU" data-s="4073" data-e="0">Weather</a> video</span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Find a drone shot that is unethical or illegal based on weather and submit it — due Sep 30 at 11:59pm. <a class="sub" href="#" data-week="Week 4 — Weather">Add your entry ↓</a></span></div>
           <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 4</span></div>
         </div>
       </div>
@@ -562,7 +618,7 @@
         <div class="time">10.02<span class="day">Fri</span></div>
         <div>
           <p class="topic"><span class="lead">Aircraft performance.</span> How aircraft perform in different situations based on the specific qualities of air and angles of wings, etc. If you've heard of airplanes stalling, you'll finally understand why it happens. Chapter 4. Quiz.</p>
-          <div class="hw"><span class="hwlabel">HW</span><span>Prepare for flight day by watching this basic how-to <a href="https://www.youtube.com/watch?v=O0ydRf3e5iM">video</a></span></div>
+          <div class="hw"><span class="hwlabel">HW</span><span>Prepare for flight day by watching this basic how-to <a class="vid" href="#" data-v="O0ydRf3e5iM" data-s="0" data-e="0">video</a></span></div>
           <div class="hw"><span class="hwlabel">HW</span><span>Read Chapter 5</span></div>
           <div class="hw"><span class="hwlabel">HW</span><span>After chapter 5, take two practice tests and email me results by Oct 7 at 11:59pm</span></div>
         </div>
@@ -824,6 +880,90 @@
 
   chips.addEventListener('click', function (e) {
     if (e.target.classList.contains('chip')) ask(e.target.textContent);
+  });
+})();
+</script>
+
+<script>
+/* =========================================================================
+   INLINE VIDEO + HOMEWORK SUBMISSION
+   Video: click a link, the clip opens in place at the right timestamp.
+   Submission: posts to a Google Form; responses land in Travis's private sheet.
+   Nothing secret here — the form only accepts writes, it can't be read back.
+   ========================================================================= */
+(function () {
+  var FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSdfn1zgC_xP3PFS7btgJSYNzIazQmjFChsAS4Vn8I_R1f0vTQ/formResponse';
+  var F = { name:'entry.1440809379', week:'entry.1881693415', link:'entry.1026616418', why:'entry.240389465' };
+
+  // ---------- inline video ----------
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a.vid');
+    if (!a) return;
+    e.preventDefault();
+
+    var row = a.closest('.hw') || a.parentElement;
+    var open = row.parentElement.querySelector('.player[data-for="' + a.dataset.v + a.dataset.s + '"]');
+    if (open) { open.remove(); return; }
+
+    var p = document.createElement('div');
+    p.className = 'player';
+    p.setAttribute('data-for', a.dataset.v + a.dataset.s);
+    var src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.v +
+              '?autoplay=1&rel=0&modestbranding=1&start=' + a.dataset.s +
+              (a.dataset.e && a.dataset.e !== '0' ? '&end=' + a.dataset.e : '');
+    var f = document.createElement('iframe');
+    f.src = src;
+    f.title = a.textContent;
+    f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+    f.allowFullscreen = true;
+    p.appendChild(f);
+    row.parentElement.insertBefore(p, row.nextSibling);
+    p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  // ---------- homework submission ----------
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a.sub');
+    if (!a || !a.dataset.week) return;
+    e.preventDefault();
+
+    var row = a.closest('.hw') || a.parentElement;
+    var existing = row.parentElement.querySelector('.subform[data-week="' + a.dataset.week + '"]');
+    if (existing) { existing.remove(); return; }
+
+    var box = document.createElement('form');
+    box.className = 'subform';
+    box.setAttribute('data-week', a.dataset.week);
+    box.innerHTML =
+      '<label>Your name</label><input name="nm" required>' +
+      '<label>Link to the drone shot</label><input name="lk" type="url" placeholder="https://…" required>' +
+      '<label>Which rule does it break, and why?</label><textarea name="wy" required></textarea>' +
+      '<div class="row"><span class="note">Goes to Travis only</span><button type="submit">Submit</button></div>';
+
+    box.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var btn = box.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Sending…';
+
+      var body = new URLSearchParams();
+      body.append(F.name, box.nm.value.trim());
+      body.append(F.week, a.dataset.week);
+      body.append(F.link, box.lk.value.trim());
+      body.append(F.why,  box.wy.value.trim());
+
+      fetch(FORM, { method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body.toString() })
+        .then(function () {
+          box.innerHTML = '<span class="ok">Submitted — thanks.</span>' +
+            '<span class="note">Travis has it. Reload the page if you need to send another.</span>';
+        })
+        .catch(function () {
+          btn.disabled = false; btn.textContent = 'Try again';
+        });
+    });
+
+    row.parentElement.insertBefore(box, row.nextSibling);
+    box.querySelector('input').focus();
   });
 })();
 </script>
